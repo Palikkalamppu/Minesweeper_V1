@@ -4,6 +4,7 @@
 #include "gameboard.h"
 
 
+
 void setCellNeighbors(board *gameBoard, cell *cell)
 {
     int x = cell->x;

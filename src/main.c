@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include "gameboard.h"
 
+
 typedef enum GameScreen { STARTSCREEN = 0, GAMEBOARDSCREEN } GameScreen;
 
 typedef struct  
