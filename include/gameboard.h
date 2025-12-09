@@ -16,6 +16,7 @@ typedef struct cell
 
 typedef struct board
 {
+    
     int width, height;
     cell **cells;
 	cell **mines;
