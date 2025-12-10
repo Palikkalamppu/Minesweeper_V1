@@ -3,6 +3,10 @@
 
 #define CELLSIDELENGTH 30
 
+#define MAX_ROWS 20
+#define MAX_COLUMNS 24
+#define MAX_MINES 99
+
 typedef struct cell
 {
     int x, y;
@@ -10,15 +14,15 @@ typedef struct cell
     int value;
 	int isVisible;
     int isFlag;
-    struct cell **neighbors;
+    struct cell *neighbors[8];
 	int neighborCount;
 } cell;
 
 typedef struct board
 {
     int width, height;
-    cell **cells;
-	cell **mines;
+    cell cells[MAX_ROWS][MAX_COLUMNS];
+	cell *mines[MAX_MINES];
     int mineCount;
     int safeCellsRemaining;
     int isLost;
