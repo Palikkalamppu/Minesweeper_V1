@@ -72,6 +72,8 @@ void guaranteeSafeOpening(cell *currentCell)
         game.gameBoard = initGameBoard(game.currentDifficulty.rows, game.currentDifficulty.columns, game.currentDifficulty.mines);
         
         guaranteeSafeOpening(&game.gameBoard->cells[y][x]);
+
+		game.firstCellOpened = 1;
     }
 }
 
@@ -162,7 +164,6 @@ int main(void)
                                 
                                 if (CheckCollisionPointRec(GetMousePosition(), currentRec) && !currentCell->isVisible && !currentCell->isFlag)                                    
                                     guaranteeSafeOpening(&game.gameBoard->cells[i][j]);
-                                    game.firstCellOpened = 1;
                             }
                         }	
 
