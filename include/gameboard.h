@@ -32,4 +32,6 @@ board *initGameBoard(int rows, int columns, int mines);
 
 void setCellVisible(board *gameBoard, cell *cell);
 
+void setGameBoardMines(board *gameBoard, cell *currentCell);
+
 #endif
