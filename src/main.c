@@ -59,24 +59,6 @@ void DrawDifficultyLevelButtons(Rectangle easy, Rectangle medium, Rectangle hard
     DrawRectangleLinesEx(hard, strokeThickness, BLACK);
 }
 
-void guaranteeSafeOpening(cell *currentCell)
-{
-    if (game.firstCellOpened || currentCell->value < 10)
-        setCellVisible(game.gameBoard, currentCell);
-    else
-    {
-        int x = currentCell->x;
-        int y = currentCell->y;
-
-        free(game.gameBoard);
-        game.gameBoard = initGameBoard(game.currentDifficulty.rows, game.currentDifficulty.columns, game.currentDifficulty.mines);
-        
-        guaranteeSafeOpening(&game.gameBoard->cells[y][x]);
-
-		game.firstCellOpened = 1;
-    }
-}
-
 int main(void)
 {
 	InitWindow(SCREENWIDTH, SCREENHEIGHT, "Mine Sweeper");
@@ -153,7 +135,6 @@ int main(void)
 
                     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
                         for (int i = 0; i < game.currentDifficulty.rows; i++)
-                        {
                             for (int j = 0; j < game.currentDifficulty.columns; j++)
                             {
                                 cell *currentCell = &game.gameBoard->cells[i][j];
@@ -162,14 +143,21 @@ int main(void)
 
                                 Rectangle currentRec = (Rectangle) {offsetX + currentX * CELLSIDELENGTH, offsetY + currentY * CELLSIDELENGTH, CELLSIDELENGTH, CELLSIDELENGTH};
                                 
-                                if (CheckCollisionPointRec(GetMousePosition(), currentRec) && !currentCell->isVisible && !currentCell->isFlag)                                    
-                                    guaranteeSafeOpening(&game.gameBoard->cells[i][j]);
+                                if (CheckCollisionPointRec(GetMousePosition(), currentRec) && !currentCell->isVisible && !currentCell->isFlag)
+                                {               
+                                    if (!game.firstCellOpened)
+                                    {
+                                        setGameBoardMines(game.gameBoard, &game.gameBoard->cells[i][j]);
+                                        setCellVisible(game.gameBoard, currentCell);
+                                        game.firstCellOpened = 1;
+                                    }
+                                    else
+                                        setCellVisible(game.gameBoard, currentCell);
+                                }
                             }
-                        }	
 
                     if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) || IsKeyPressed(KEY_SPACE))
                         for (int i = 0; i < game.currentDifficulty.rows; i++)
-                        {
                             for (int j = 0; j < game.currentDifficulty.columns; j++)
                             {
                                 cell *currentCell = &game.gameBoard->cells[i][j];
@@ -192,7 +180,6 @@ int main(void)
                                     }                             
                                 }
                             }
-                        }	
                 }
             } break;
         }
